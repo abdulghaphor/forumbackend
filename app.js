@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const db = require("./db/models");
-const { bakeryRouter, cookieRouter } = require("./routers");
+const { bakeryRouter, cookieRouter, userRouter } = require("./routers");
 const path = require("path");
 
 // Initialize Express
@@ -10,6 +10,7 @@ const app = express();
 // Routers
 app.use("/cookies", cookieRouter);
 app.use("/bakeries", bakeryRouter);
+app.use("/users", userRouter);
 
 // Middleware
 app.use(cors());

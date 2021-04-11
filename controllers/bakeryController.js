@@ -36,7 +36,12 @@ exports.bakeryCreate = async (req, res, next) => {
     next(err);
   }
 };
-
+const signup = (userData) => {
+  instance
+    .post("/user/signup", userData)
+    .then((res) => setToken(res.data.token))
+    .catch((err) => console.log(err.message));
+};
 // lists item
 exports.bakeryList = async (req, res) => {
   try {

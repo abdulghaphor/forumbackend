@@ -1,3 +1,4 @@
 const cookieRouter = require("./cookieRouter");
 const bakeryRouter = require("./bakeryRouter");
-module.exports = { cookieRouter, bakeryRouter };
+const userRouter = require("./userRouter");
+module.exports = { cookieRouter, bakeryRouter, userRouter };
