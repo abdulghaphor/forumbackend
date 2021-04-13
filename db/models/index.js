@@ -49,6 +49,10 @@ db.Bakery.hasMany(db.Cookie, {
   foreignKey: "bakeryId",
   allowNull: false,
 });
+db.Bakery.belongsTo(db.User, {
+  as: "user",
+  foreignKey: "userId",
+});
 db.Cookie.belongsTo(db.Bakery, {
   as: "bakery",
   foreignKey: "bakeryId",

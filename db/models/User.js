@@ -3,6 +3,10 @@ module.exports = (sequelize, DataTypes) => {
     email: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: {
+        args: true,
+        msg: "Email already exists.",
+      },
     },
     full_name: {
       type: DataTypes.STRING,
