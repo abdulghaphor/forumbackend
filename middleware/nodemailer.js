@@ -9,18 +9,27 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const mailer = (to, subject, message) => {
-  transporter.sendMail(
-    {
-      from: { address: process.env.MAIL_USERNAME, name: process.env.MAIL_FROM },
-      to: to,
-      subject: subject,
-      text: message,
-    },
-    (err, res) => {
-      console.log("Email sent: " + res.response);
-    }
-  );
+const sendMail = (to, subject, content) => {
+  return new Promise((resolve, reject) => {
+    transporter.sendMail(
+      {
+        from: {
+          address: process.env.MAIL_USERNAME,
+          name: process.env.MAIL_FROM,
+        },
+        to: to,
+        subject: subject,
+        html: content,
+      },
+      (err, res) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(res);
+        }
+      }
+    );
+  });
 };
 
-module.exports = mailer;
+module.exports = sendMail;

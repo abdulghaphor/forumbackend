@@ -12,6 +12,7 @@ const {
   fetchBakery,
   cookieCreate,
 } = require("../controllers");
+const passport = require("passport");
 
 // intercepts anything with bakeryId in it's parameter
 router.param("bakeryId", async (req, res, next, bakeryId) => {
@@ -26,10 +27,29 @@ router.param("bakeryId", async (req, res, next, bakeryId) => {
   }
 });
 
-router.post("/:bakeryId/cookie", upload.single("image"), cookieCreate);
-router.post("/", upload.single("image"), bakeryCreate);
+router.post(
+  "/:bakeryId/cookie",
+  passport.authenticate("jwt", { session: false }),
+  upload.single("image"),
+  cookieCreate
+);
+router.post(
+  "/",
+  passport.authenticate("jwt", { session: false }),
+  upload.single("image"),
+  bakeryCreate
+);
 router.get("/", bakeryList);
-router.put("/:bakeryId", upload.single("image"), bakeryUpdate);
-router.delete("/:bakeryId", bakeryDelete);
+router.put(
+  "/:bakeryId",
+  passport.authenticate("jwt", { session: false }),
+  upload.single("image"),
+  bakeryUpdate
+);
+router.delete(
+  "/:bakeryId",
+  passport.authenticate("jwt", { session: false }),
+  bakeryDelete
+);
 
 module.exports = router;

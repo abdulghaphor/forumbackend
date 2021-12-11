@@ -2,19 +2,24 @@ const express = require("express");
 const cors = require("cors");
 const db = require("./db/models");
 const { bakeryRouter, cookieRouter, userRouter } = require("./routers");
+const { localStrategy, jwtStrategy } = require("./middleware/passport");
 const path = require("path");
+const passport = require("passport");
 
-// Initialize Express
+// Initialize Express and create a variable that points to the app dir
 const app = express();
-
-// Routers
-app.use("/cookies", cookieRouter);
-app.use("/bakeries", bakeryRouter);
-app.use("/users", userRouter);
+global.__appdir = __dirname;
 
 // Middleware
 app.use(cors());
 app.use("/media", express.static(path.join(__dirname, "media")));
+app.use(passport.initialize());
+passport.use(localStrategy);
+passport.use(jwtStrategy);
+// Routers
+app.use("/cookies", cookieRouter);
+app.use("/bakeries", bakeryRouter);
+app.use("/users", userRouter);
 
 // Error Handling Middleware
 app.use((err, req, res, next) => {

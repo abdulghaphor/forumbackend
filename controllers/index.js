@@ -13,7 +13,7 @@ const {
   fetchBakery,
 } = require("./bakeryController");
 
-const { userSignup } = require("./userController");
+const { userSignup, userSignin } = require("./userController");
 
 module.exports = {
   cookieCreate,
@@ -27,4 +27,5 @@ module.exports = {
   bakeryDelete,
   fetchBakery,
   userSignup,
+  userSignin,
 };

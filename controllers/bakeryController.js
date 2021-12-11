@@ -12,13 +12,20 @@ exports.fetchBakery = async (bakeryId, next) => {
 
 // creates item that belongs to another
 exports.cookieCreate = async (req, res, next) => {
+  console.log("USER #", req.user.id, req.bakery.userId);
   try {
-    if (req.file) {
-      req.body.image = `http://${req.get("host")}/media/${req.file.filename}`;
+    if (req.user.id === req.bakery.userId) {
+      if (req.file) {
+        req.body.image = `http://${req.get("host")}/media/${req.file.filename}`;
+      }
+      req.body.bakeryId = req.bakery.id;
+      const newCookie = await Cookie.create(req.body);
+      res.status(201).json(newCookie);
+    } else {
+      const err = new Error("Unauthorized");
+      err.status = 401;
+      next(err);
     }
-    req.body.bakeryId = req.bakery.id;
-    const newCookie = await Cookie.create(req.body);
-    res.status(201).json(newCookie);
   } catch (err) {
     next(err);
   }
@@ -30,18 +37,14 @@ exports.bakeryCreate = async (req, res, next) => {
     if (req.file) {
       req.body.image = `http://${req.get("host")}/media/${req.file.filename}`;
     }
+    req.body.userId = req.user.id;
     const newBakery = await Bakery.create(req.body);
     res.status(201).json(newBakery);
   } catch (err) {
     next(err);
   }
 };
-const signup = (userData) => {
-  instance
-    .post("/user/signup", userData)
-    .then((res) => setToken(res.data.token))
-    .catch((err) => console.log(err.message));
-};
+
 // lists item
 exports.bakeryList = async (req, res) => {
   try {
